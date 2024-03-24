@@ -72,3 +72,23 @@ def check_filename_feasible(filename: str, replace: bool = False) -> Union[str, 
             filename = filename[1:]
 
         return filename.strip()
+
+
+def merge_intersection_item(items: Union[list, tuple, set]) -> list:
+    """合并有交集的集合/列表/元组 [(1,2),(2,3),(5,6)]->[{1,2,3},(5,6)]
+    :return: 示例 [(1,2),(2,3),(5,6)]->[{1,2,3},(5,6)]"""
+    merged_list = []
+
+    for i in range(len(items)):
+        set_merged = False
+
+        for j in range(len(merged_list)):
+            if set(items[i]) & set(merged_list[j]):
+                merged_list[j] = set(set(items[i]) | set(merged_list[j]))
+                set_merged = True
+                break
+
+        if not set_merged:
+            merged_list.append(items[i])
+
+    return merged_list

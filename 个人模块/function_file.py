@@ -237,3 +237,11 @@ def un_nested_folder(origin_folder: str, target_folder: str = None) -> str:
     delete_empty_folder(origin_folder, to_recycle_bin=False)  # 如果原始文件夹为空，则直接删除
 
     return final_path
+
+
+def reverse_path(path: str):
+    """反转路径，从后到前排列目录层级"""
+    path = os.path.normpath(path)
+    split_path = path.split('\\')
+    path_reversed = ' \\ '.join(split_path[::-1])
+    return path_reversed

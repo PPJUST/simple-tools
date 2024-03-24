@@ -9,6 +9,7 @@ from typing import Tuple
 
 import cv2
 import numpy
+from PIL import Image
 
 
 def image_to_numpy(image_file: str, gray=False, resize: Tuple[int, int] = None):
@@ -27,5 +28,14 @@ def image_to_numpy(image_file: str, gray=False, resize: Tuple[int, int] = None):
             image_numpy = cv2.cvtColor(image_numpy, cv2.COLOR_BGR2GRAY)
         except cv2.error:
             pass
+
+    return image_numpy
+
+
+def image_to_numpy_pil(image_file: str):
+    """将图片转为numpy对象
+     :param image_file: 图片路径
+     :return: numpy.ndarray对象，图片的numpy对象"""
+    image_numpy = numpy.array(Image.open(image_file))
 
     return image_numpy
