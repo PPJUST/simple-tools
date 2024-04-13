@@ -49,7 +49,6 @@ def split_filename(filename: str):
 
     # 匹配GOPR
     match_gp_top = re.match(pattern_GP_top, filename)
-    print('match_gp_top', match_gp_top)
     if match_gp_top:
         filename_split['type'] = 'GP'
         filename_split['chapter'] = '01'
