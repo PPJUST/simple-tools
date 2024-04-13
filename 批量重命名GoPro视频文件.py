@@ -1,6 +1,6 @@
 """
 更新日期：
-2024.02.19
+2024.04.13
 
 功能：
 重命名使用GoPro拍摄的视频文件，命名格式为 "视频编号_章节 - 原始文件名.mp4"
@@ -12,14 +12,14 @@ import re
 
 """GoPro文件名正则"""
 # GH、GX一般视频（H=AVC编码，X=HEVC编码，GHzzxxxx.mp4）
-pattern_GHX = r'^(G[HX])(\d{2})(\d{4})(\.mp4)$'
+pattern_GHX = r'^(G[HX])(\d{2})(\d{4})(\.MP4)$'
 
 # GH、GX循环视频（H=AVC编码，X=HEVC编码，同一文件看YY，GHYYxxxx.mp4）
-pattern_GHX_loop = r'^(G[HX])([A-Z]{2})(\d{4})(\.mp4)$'
+pattern_GHX_loop = r'^(G[HX])([A-Z]{2})(\d{4})(\.MP4)$'
 
 # GOPR、GP（GOPR固定为第一个视频，如果有分段后续编号从GP开始，GP011234.mp4）
-pattern_GP_top = r'^GOPR(\d{4})(\.mp4)$'
-pattern_GP_volume = r'^(GP)(\d{2})(\d{4})(\.mp4)$'
+pattern_GP_top = r'^GOPR(\d{4})(\.MP4)$'
+pattern_GP_volume = r'^(GP)(\d{2})(\d{4})(\.MP4)$'
 
 
 def split_filename(filename: str):
@@ -49,6 +49,7 @@ def split_filename(filename: str):
 
     # 匹配GOPR
     match_gp_top = re.match(pattern_GP_top, filename)
+    print('match_gp_top', match_gp_top)
     if match_gp_top:
         filename_split['type'] = 'GP'
         filename_split['chapter'] = '01'
@@ -106,5 +107,4 @@ def main():
 
 
 if __name__ == '__main__':
-    while True:
-        main()
+    main()
