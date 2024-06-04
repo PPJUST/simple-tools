@@ -172,6 +172,7 @@ def create_nodup_filename(path: str, target_dirpath: str, dup_suffix: str = ' -N
         new_filename = target_filetitle + suffix
         temp_filename = target_filetitle + dup_suffix + '1' + suffix
     else:
+        target_filetitle = filetitle
         new_filename = filetitle + suffix
         temp_filename = filetitle + dup_suffix + '1' + suffix
 
