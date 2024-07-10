@@ -24,7 +24,6 @@ def _is_video_mask(file):
         with zipfile.ZipFile(file, 'r') as zf:
             zf.setpassword('fake'.encode())
             zf.testzip()
-
         # 如果能成功测试，但是检测出来的格式不是压缩包，则该隐写文件无密码
         if _is_archive(file):
             return False
@@ -47,6 +46,7 @@ def _is_archive(file):
         return False
 
     guess_type = kind.extension
+    print('该文件类型：')
     if guess_type == 'zip':
         return True
     else:
@@ -142,7 +142,10 @@ except IndexError:
 
 # 测试用，输入文件夹路径
 path = input('输入：')
-_files = [os.path.join(path, i) for i in os.listdir(path)]
+if os.path.isfile(path):
+    _files = [path]
+else:
+    _files = [os.path.join(path, i) for i in os.listdir(path)]
 
 if not _files:
     print('使用：请直接拖入文件到程序图标上使用')
