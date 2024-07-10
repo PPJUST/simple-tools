@@ -13,6 +13,7 @@ import zipfile
 from typing import Union
 
 import pyzipper
+import filetype
 
 
 def _is_video_mask(file):
@@ -23,7 +24,13 @@ def _is_video_mask(file):
         with zipfile.ZipFile(file, 'r') as zf:
             zf.setpassword('fake'.encode())
             zf.testzip()
+
+        # 如果能成功测试，但是检测出来的格式不是压缩包，则该隐写文件无密码
+        if _is_archive(file):
             return False
+        else:
+            return True
+
     except Exception as e:
         # print('报错：', e)
         e = str(e)
@@ -31,6 +38,19 @@ def _is_video_mask(file):
             return True
         else:
             return False
+
+
+def _is_archive(file):
+    """使用filetype库判断是否为zip压缩文件"""
+    kind = filetype.guess(file)
+    if kind is None:
+        return False
+
+    guess_type = kind.extension
+    if guess_type == 'zip':
+        return True
+    else:
+        return False
 
 
 def _test_password(zip_file, password: str):
@@ -87,6 +107,8 @@ def test_files(files: Union[list, str], passwords: Union[list, str]):
     if isinstance(passwords, str):
         passwords = [passwords]
 
+    passwords.insert(0, '无密码')
+
     for file in files:
         # 首先测试其是否为伪装成视频的压缩文件（暂时只考虑zip伪装）
         print('-' * 16)
@@ -117,8 +139,11 @@ try:
     _files = sys.argv[1:]
 except IndexError:
     _files = []
-# path = input('输入：')
-# files = [os.path.join(path, i) for i in os.listdir(path)]
+
+# 测试用，输入文件夹路径
+path = input('输入：')
+_files = [os.path.join(path, i) for i in os.listdir(path)]
+
 if not _files:
     print('使用：请直接拖入文件到程序图标上使用')
     print("密码：将密码写入同目录下的'密码.txt'中，一个密码占一行")
